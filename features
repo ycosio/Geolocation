@@ -1,0 +1,17 @@
+1) Create the simple structure of the web page
+	* folders
+		- assets
+		- css
+		- js
+	* files
+		- index.html
+		- js/general_scripts.js
+		- include bootstrap in css folder and index file
+
+2) Defining the style of the page, margins, contents place, colors, the flow(How is going to work the web page, just the visual idea without functionality) 
+
+3) Adding the map to select and ping at least 3 locations
+
+4) From the previous points use Geolocation to calculate and show the distance between each the locations.
+
+5) Attach a video or audio usign HTML5 to play them after selecting each location.
