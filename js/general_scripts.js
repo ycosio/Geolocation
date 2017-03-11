@@ -4,11 +4,13 @@ $( function() {
 
 window.onload = getMyLocation;
 
+//First static place
 var WickedlySmart = {
  latitude: 47.624851,
  longitude: -122.52099
 };
 
+//Second static place
 var Nigeria = {
  latitude: 8.0000000,
  longitude: 10.0000000
@@ -16,9 +18,11 @@ var Nigeria = {
 
 var map;
 
+//Showing the marker for positions
 function addMarker(map, latlong, title, content) {
+	var googleLatAndLong = new google.maps.LatLng(latlong.latitude,latlong.longitude);
 	var markerOptions = {
-		position: latlong,
+		position: googleLatAndLong,
 		map: map,
 		title: title,
 		clickable: true
@@ -28,16 +32,17 @@ function addMarker(map, latlong, title, content) {
 
 	var infoWindowOptions = {
 		content: content,
-		position: latlong
+		position: googleLatAndLong
 	};
 
 	var infoWindow = new google.maps.InfoWindow(infoWindowOptions);
 
 	google.maps.event.addListener(marker, "click", function() {
-	infoWindow.open(map);
+		infoWindow.open(map);
 	});
 }
 
+//Showing the map
 function showMap(coords) {
 	var googleLatAndLong = new google.maps.LatLng(coords.latitude,coords.longitude);
 	var mapProp= {
@@ -45,21 +50,17 @@ function showMap(coords) {
 	    zoom: 2,
 		mapTypeId: google.maps.MapTypeId.ROADMAP
 	};
-	var map=new google.maps.Map(document.getElementById("map"),mapProp);
+	var map = new google.maps.Map(document.getElementById("map"),mapProp);
 
-	var title = "Your Location";
-	var content = "You are here: " + coords.latitude + ", " + coords.longitude;
-	addMarker(map, googleLatAndLong, title, content);
+	//Adding tne markers
+	var content = "Your Location: " + coords.latitude + ", " + coords.longitude;
+	addMarker(map, coords, "Your Location" , content);
 
-	googleLatAndLong = new google.maps.LatLng(WickedlySmart.latitude,WickedlySmart.longitude);
-	title = "WickedlySmart";
 	content = "WickedlySmart: " + WickedlySmart.latitude + ", " + WickedlySmart.longitude;
-	addMarker(map, googleLatAndLong, title, content);
+	addMarker(map, WickedlySmart, "WickedlySmart", content);
 
-	googleLatAndLong = new google.maps.LatLng(Nigeria.latitude,Nigeria.longitude);
-	title = "Nigeria";
 	content = "Nigeria: " + Nigeria.latitude + ", " + Nigeria.longitude;
-	addMarker(map, googleLatAndLong, title, content);
+	addMarker(map, Nigeria, "Nigeria", content);
 }
 
 // Get distance between points
@@ -86,15 +87,20 @@ function displayLocation(position) {
 	var longitude = position.coords.longitude;
 	var div = document.getElementById("location");
 	div.innerHTML = "You are at Latitude: " + latitude + ", Longitude: " + longitude;
+
+	//Adding the distance among all positions
 	var km = computeDistance(position.coords, WickedlySmart);
 	div = document.getElementById("P1-P2");
 	div.innerHTML = "You are " + km + " km from the WickedlySmart HQ";
+
 	km = computeDistance(position.coords, Nigeria);
 	div = document.getElementById("P1-P3");
 	div.innerHTML = "You are " + km + " km from the Nigeria";
+
 	km = computeDistance(Nigeria, WickedlySmart);
 	div = document.getElementById("P2-P3");
 	div.innerHTML = "Nigeria is " + km + " km from the WickedlySmart HQ";
+
 	showMap(position.coords);
 }
 
