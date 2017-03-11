@@ -1,3 +1,4 @@
+------------------------------DONE--------------------------
 1) Create the simple structure of the web page
 	* folders
 		- assets
@@ -7,12 +8,18 @@
 		- index.html
 		- js/general_scripts.js
 		- include bootstrap in css folder and index file
+------------------------------DONE--------------------------
+
 
 2) Defining the style of the page, margins, contents place, colors, the flow(How is going to work the web page, just the visual idea without functionality) 
 
+------------------------------DONE--------------------------
 3) Adding the map and set at least 3 static positions showing their information to make ping from each other
+------------------------------DONE--------------------------
 
+------------------------------DONE--------------------------
 4) From the previous points use Geolocation to calculate and show the distance between each the locations
+------------------------------DONE--------------------------
 
 5) Add the posibility to select and get data from any position on the map
 
