@@ -4,9 +4,14 @@ $( function() {
 
 window.onload = getMyLocation;
 
-var ourCoords = {
+var WickedlySmart = {
  latitude: 47.624851,
  longitude: -122.52099
+};
+
+var Nigeria = {
+ latitude: 8.0000000,
+ longitude: 10.0000000
 };
 
 var map;
@@ -37,7 +42,7 @@ function showMap(coords) {
 	var googleLatAndLong = new google.maps.LatLng(coords.latitude,coords.longitude);
 	var mapProp= {
 	    center: googleLatAndLong,
-	    zoom: 10,
+	    zoom: 2,
 		mapTypeId: google.maps.MapTypeId.ROADMAP
 	};
 	var map=new google.maps.Map(document.getElementById("map"),mapProp);
@@ -45,25 +50,16 @@ function showMap(coords) {
 	var title = "Your Location";
 	var content = "You are here: " + coords.latitude + ", " + coords.longitude;
 	addMarker(map, googleLatAndLong, title, content);
-}
 
-// Get distance between points
+	googleLatAndLong = new google.maps.LatLng(WickedlySmart.latitude,WickedlySmart.longitude);
+	title = "WickedlySmart";
+	content = "WickedlySmart: " + WickedlySmart.latitude + ", " + WickedlySmart.longitude;
+	addMarker(map, googleLatAndLong, title, content);
 
-function degreesToRadians(degrees) {
-	var radians = (degrees * Math.PI)/180;
-	return radians;
-}
-
-function computeDistance(startCoords, destCoords) {
-	var startLatRads = degreesToRadians(startCoords.latitude);
-	var startLongRads = degreesToRadians(startCoords.longitude);
-	var destLatRads = degreesToRadians(destCoords.latitude);
-	var destLongRads = degreesToRadians(destCoords.longitude);
-	var Radius = 6371; // radius of the Earth in km
-	var distance = Math.acos(Math.sin(startLatRads) * Math.sin(destLatRads) +
-	Math.cos(startLatRads) * Math.cos(destLatRads) *
-	Math.cos(startLongRads - destLongRads)) * Radius;
-	return distance;
+	googleLatAndLong = new google.maps.LatLng(Nigeria.latitude,Nigeria.longitude);
+	title = "Nigeria";
+	content = "Nigeria: " + Nigeria.latitude + ", " + Nigeria.longitude;
+	addMarker(map, googleLatAndLong, title, content);
 }
 
 function displayLocation(position) {
@@ -71,9 +67,7 @@ function displayLocation(position) {
 	var longitude = position.coords.longitude;
 	var div = document.getElementById("location");
 	div.innerHTML = "You are at Latitude: " + latitude + ", Longitude: " + longitude;
-	var km = computeDistance(position.coords, ourCoords);
-	div = document.getElementById("distance");
-	div.innerHTML = "You are " + km + " km from the WickedlySmart HQ";
+
 	showMap(position.coords);
 }
 
