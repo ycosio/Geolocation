@@ -62,12 +62,39 @@ function showMap(coords) {
 	addMarker(map, googleLatAndLong, title, content);
 }
 
+// Get distance between points
+
+function degreesToRadians(degrees) {
+	var radians = (degrees * Math.PI)/180;
+	return radians;
+}
+
+function computeDistance(startCoords, destCoords) {
+	var startLatRads = degreesToRadians(startCoords.latitude);
+	var startLongRads = degreesToRadians(startCoords.longitude);
+	var destLatRads = degreesToRadians(destCoords.latitude);
+	var destLongRads = degreesToRadians(destCoords.longitude);
+	var Radius = 6371; // radius of the Earth in km
+	var distance = Math.acos(Math.sin(startLatRads) * Math.sin(destLatRads) +
+	Math.cos(startLatRads) * Math.cos(destLatRads) *
+	Math.cos(startLongRads - destLongRads)) * Radius;
+	return distance;
+}
+
 function displayLocation(position) {
 	var latitude = position.coords.latitude;
 	var longitude = position.coords.longitude;
 	var div = document.getElementById("location");
 	div.innerHTML = "You are at Latitude: " + latitude + ", Longitude: " + longitude;
-
+	var km = computeDistance(position.coords, WickedlySmart);
+	div = document.getElementById("P1-P2");
+	div.innerHTML = "You are " + km + " km from the WickedlySmart HQ";
+	km = computeDistance(position.coords, Nigeria);
+	div = document.getElementById("P1-P3");
+	div.innerHTML = "You are " + km + " km from the Nigeria";
+	km = computeDistance(Nigeria, WickedlySmart);
+	div = document.getElementById("P2-P3");
+	div.innerHTML = "Nigeria is " + km + " km from the WickedlySmart HQ";
 	showMap(position.coords);
 }
 
