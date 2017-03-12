@@ -86,20 +86,20 @@ function displayLocation(position) {
 	var latitude = position.coords.latitude;
 	var longitude = position.coords.longitude;
 	var div = document.getElementById("location");
-	div.innerHTML = "You are at Latitude: " + latitude + ", Longitude: " + longitude;
+	div.innerHTML = "Your coordinates</br>Latitude: " + latitude + "</br> Longitude: " + longitude;
 
 	//Adding the distance among all positions
 	var km = computeDistance(position.coords, WickedlySmart);
 	div = document.getElementById("P1-P2");
-	div.innerHTML = "You are " + km + " km from the WickedlySmart HQ";
+	div.innerHTML = "</br>Distances </br>You - WickedlySmart HQ:</br> " + km+" km";
 
 	km = computeDistance(position.coords, Nigeria);
 	div = document.getElementById("P1-P3");
-	div.innerHTML = "You are " + km + " km from the Nigeria";
+	div.innerHTML = "You - Nigeria</br>  " + km + " km";
 
 	km = computeDistance(Nigeria, WickedlySmart);
 	div = document.getElementById("P2-P3");
-	div.innerHTML = "Nigeria is " + km + " km from the WickedlySmart HQ";
+	div.innerHTML = "Nigeria - WickedlySmart HQ:</br>  " + km + " km";
 
 	showMap(position.coords);
 }
@@ -111,7 +111,3 @@ function getMyLocation() {
 		alert("Oops, no geolocation support");
 	}
 }
-
-
-
-
