@@ -45,10 +45,15 @@ header {
 }
 .info{
   float: left;
-  width:30%;
+  width:25%;
   text-transform: capitalize;
   font:1.2em/1 'Raleway', sans-serif;
   line-height: 1.5;
   color: rgba(0,0,0,.8);
   position: absolute;
+}
+#P1-P2{
+  margin-top: 30px;
+  height: 20pc;
+  overflow-y: scroll;
 }
