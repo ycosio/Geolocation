@@ -15,8 +15,8 @@ var Nigeria = {
     latitude: 8.0000000,
     longitude: 10.0000000
 };
-
-var map;
+var markerByUser = [];
+var map, count = 0;
 
 //Showing the marker for positions
 function addMarker(map, latlong, title, content) {
@@ -61,13 +61,25 @@ function showMap(coords) {
 
     content = "Nigeria: " + Nigeria.latitude + ", " + Nigeria.longitude;
     addMarker(map, Nigeria, "Nigeria", content);
-    //To add Marker anywhere 
+    //To add Marker anywhere
     map.addListener('click', function(e) {
-        var content = "Your Marker: " + e.latLng.lat() + ", " + e.latLng.lng();
-        addMarker(map, {
-            latitude: e.latLng.lat(),
-            longitude: e.latLng.lng()
-        }, "Your Marker", content);
+        if (count < 6) {
+            var content = "Your Marker: " + e.latLng.lat() + ", " + e.latLng.lng();
+            addMarker(map, {
+                latitude: e.latLng.lat(),
+                longitude: e.latLng.lng()
+            }, "Your Marker " + (count + 1), content);
+            markerByUser.push(["Your Marker " + (count + 1), {
+                latitude: e.latLng.lat(),
+                longitude: e.latLng.lng()
+            }]);
+            //console.log(markerByUser[count]);
+            count++;
+            PushDistances();
+        } else {
+            alert("Can't add more markers!");
+        }
+
     });
 }
 // Get distance between points
@@ -94,21 +106,27 @@ function displayLocation(position) {
     var longitude = position.coords.longitude;
     var div = document.getElementById("location");
     div.innerHTML = "Your coordinates</br>Latitude: " + latitude + "</br> Longitude: " + longitude;
+    markerByUser.push(["You", {
+        latitude: position.coords.latitude,
+        longitude: position.coords.longitude
+    }]);
+    markerByUser.push(['WickedlySmart HQ', WickedlySmart]);
+    markerByUser.push(['Nigeria', Nigeria]);
 
+    PushDistances();
     //Adding the distance among all positions
-    var km = computeDistance(position.coords, WickedlySmart);
-    div = document.getElementById("P1-P2");
-    div.innerHTML = "</br>Distances </br>You - WickedlySmart HQ:</br> " + km + " km";
+    /*  var km = computeDistance(position.coords, WickedlySmart);
+      div = document.getElementById("P1-P2");
+      div.innerHTML = "</br>Distances </br>You - WickedlySmart HQ:</br> " + km + " km";
 
-    km = computeDistance(position.coords, Nigeria);
-    div = document.getElementById("P1-P3");
-    div.innerHTML = "You - Nigeria</br>  " + km + " km";
+      km = computeDistance(position.coords, Nigeria);
+      div = document.getElementById("P1-P3");
+      div.innerHTML = "You - Nigeria</br>  " + km + " km";
 
-    km = computeDistance(Nigeria, WickedlySmart);
-    div = document.getElementById("P2-P3");
-    div.innerHTML = "Nigeria - WickedlySmart HQ:</br>  " + km + " km";
-
-    showMap(position.coords);
+      km = computeDistance(Nigeria, WickedlySmart);
+      div = document.getElementById("P2-P3");
+      div.innerHTML = "Nigeria - WickedlySmart HQ:</br>  " + km + " km";*/
+      showMap(position.coords);
 }
 
 function getMyLocation() {
@@ -117,4 +135,15 @@ function getMyLocation() {
     } else {
         alert("Oops, no geolocation support");
     }
+}
+function PushDistances(){
+  var DistanceLabel = "Distances</br>";
+  for (var pointA = 0; pointA < markerByUser.length; pointA++) {
+      for (var pointB = pointA + 1; pointB < markerByUser.length; pointB++) {
+          DistanceLabel += markerByUser[pointA][0] + " - " + markerByUser[pointB][0] + ":</br>" + computeDistance(markerByUser[pointA][1], markerByUser[pointB][1]) + "Km</br>";
+      }
+  }
+  div = document.getElementById("P1-P2");
+  div.innerHTML = DistanceLabel;
+
 }
