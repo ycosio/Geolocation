@@ -71,8 +71,8 @@ function showMap(coords) {
             addMarker(map, {
                 latitude: e.latLng.lat(),
                 longitude: e.latLng.lng()
-            }, "Your Marker " + (count + 1), content);
-            markerByUser.push([(count + 1).toString(), {
+            }, "Your Marker " + (count + 4), content);
+            markerByUser.push([(count + 4).toString(), {
                 latitude: e.latLng.lat(),
                 longitude: e.latLng.lng()
             }]);
