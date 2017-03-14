@@ -171,7 +171,7 @@ function upload(locale) {
     var storageRef = storage.ref();
 
     var mblob = new Blob([locale], { type: 'text/plain' });
-    var textFile= new File([mblob],"Location"+locale[10]+locale[11],{ type: 'text/plain' })
+    var textFile= new File([mblob],locale,{ type: 'text/plain' })
 
 
     // Create the file metadata
@@ -201,7 +201,7 @@ function upload(locale) {
         function(error) {
             switch (error.code) {
                 case 'storage/unauthorized':
-                    // User doesn't have permission to access the object
+                    console.log("User doesn't have permission to access the object");
                     break;
 
                 case 'storage/canceled':
