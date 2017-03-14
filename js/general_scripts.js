@@ -18,6 +18,7 @@ var Nigeria = {
 var markerByUser = [];
 var map, count = 0;
 var audio= new Audio("assets/listen.mp3");
+var id = 1;
 
 //Showing the marker for positions
 function addMarker(map, latlong, title, content) {
@@ -25,6 +26,7 @@ function addMarker(map, latlong, title, content) {
     var markerOptions = {
         position: googleLatAndLong,
         map: map,
+        label: id.toString(),
         title: title,
         clickable: true
     };
@@ -42,6 +44,7 @@ function addMarker(map, latlong, title, content) {
       audio.play();
       infoWindow.open(map);
     });
+    id++;
 }
 
 //Showing the map
@@ -73,7 +76,7 @@ function showMap(coords) {
                 latitude: e.latLng.lat(),
                 longitude: e.latLng.lng()
             }, "Your Marker " + (count + 1), content);
-            markerByUser.push(["Your Marker " + (count + 1), {
+            markerByUser.push([(count + 1).toString(), {
                 latitude: e.latLng.lat(),
                 longitude: e.latLng.lng()
             }]);
@@ -140,17 +143,15 @@ function getMyLocation() {
     }
 }
 
-function PushDistances() {
-    var DistanceLabel = "Distances</br>";
-    for (var pointA = 0; pointA < markerByUser.length; pointA++) {
-        for (var pointB = pointA + 1; pointB < markerByUser.length; pointB++) {
-            DistanceLabel += markerByUser[pointA][0] + " - " + markerByUser[pointB][0] + ":</br>" + computeDistance(markerByUser[pointA][1], markerByUser[pointB][1]) + "Km</br>";
-        }
-    }
-    div = document.getElementById("P1-P2");
-    div.innerHTML = DistanceLabel;
-
-}
+function PushDistances(){
+  var DistanceLabel = "<tr><th>Marker</th><th>To marker</th><th>Distance</th></tr>";
+  for (var pointA = 0; pointA < markerByUser.length; pointA++) {
+      for (var pointB = pointA + 1; pointB < markerByUser.length; pointB++) {
+          DistanceLabel += "<tr><td>" + markerByUser[pointA][0] + "</td><td>" + markerByUser[pointB][0] + "</td><td>" + computeDistance(markerByUser[pointA][1], markerByUser[pointB][1]).toFixed(3) + "Km</td></tr>";
+      }
+  }
+  div = document.getElementById("table");
+  div.innerHTML = DistanceLabel;
 
 //----------------------------------------------Firebase Scripts----------------------------------------------------------//
 
