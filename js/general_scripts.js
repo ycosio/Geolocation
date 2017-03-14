@@ -17,6 +17,7 @@ var Nigeria = {
 };
 var markerByUser = [];
 var map, count = 0;
+var audio= new Audio("assets/listen.mp3");
 
 //Showing the marker for positions
 function addMarker(map, latlong, title, content) {
@@ -38,7 +39,8 @@ function addMarker(map, latlong, title, content) {
     var infoWindow = new google.maps.InfoWindow(infoWindowOptions);
 
     google.maps.event.addListener(marker, "click", function() {
-        infoWindow.open(map);
+      audio.play();
+      infoWindow.open(map);
     });
 }
 
@@ -64,6 +66,7 @@ function showMap(coords) {
     //To add Marker anywhere
     map.addListener('click', function(e) {
         if (count < 6) {
+            audio.play();
             var content = "Your Marker: " + e.latLng.lat() + ", " + e.latLng.lng();
             addMarker(map, {
                 latitude: e.latLng.lat(),
@@ -73,7 +76,6 @@ function showMap(coords) {
                 latitude: e.latLng.lat(),
                 longitude: e.latLng.lng()
             }]);
-            //console.log(markerByUser[count]);
             count++;
             PushDistances();
         } else {
