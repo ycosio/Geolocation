@@ -55,6 +55,7 @@ function showMap(coords) {
     //Adding tne markers
     var content = "Your Location: " + coords.latitude + ", " + coords.longitude;
     addMarker(map, coords, "Your Location", content);
+    upload(content);
 
     content = "WickedlySmart: " + WickedlySmart.latitude + ", " + WickedlySmart.longitude;
     addMarker(map, WickedlySmart, "WickedlySmart", content);
@@ -126,7 +127,7 @@ function displayLocation(position) {
       km = computeDistance(Nigeria, WickedlySmart);
       div = document.getElementById("P2-P3");
       div.innerHTML = "Nigeria - WickedlySmart HQ:</br>  " + km + " km";*/
-      showMap(position.coords);
+    showMap(position.coords);
 }
 
 function getMyLocation() {
@@ -136,14 +137,81 @@ function getMyLocation() {
         alert("Oops, no geolocation support");
     }
 }
-function PushDistances(){
-  var DistanceLabel = "Distances</br>";
-  for (var pointA = 0; pointA < markerByUser.length; pointA++) {
-      for (var pointB = pointA + 1; pointB < markerByUser.length; pointB++) {
-          DistanceLabel += markerByUser[pointA][0] + " - " + markerByUser[pointB][0] + ":</br>" + computeDistance(markerByUser[pointA][1], markerByUser[pointB][1]) + "Km</br>";
-      }
-  }
-  div = document.getElementById("P1-P2");
-  div.innerHTML = DistanceLabel;
 
+function PushDistances() {
+    var DistanceLabel = "Distances</br>";
+    for (var pointA = 0; pointA < markerByUser.length; pointA++) {
+        for (var pointB = pointA + 1; pointB < markerByUser.length; pointB++) {
+            DistanceLabel += markerByUser[pointA][0] + " - " + markerByUser[pointB][0] + ":</br>" + computeDistance(markerByUser[pointA][1], markerByUser[pointB][1]) + "Km</br>";
+        }
+    }
+    div = document.getElementById("P1-P2");
+    div.innerHTML = DistanceLabel;
+
+}
+
+//----------------------------------------------Firebase Scripts----------------------------------------------------------//
+
+
+function upload(locale) {
+
+    // Initialize Firebase
+    var config = {
+        apiKey: "AIzaSyCZxv8sG7abRmj-NKC7_VtjzgnK87r3SI0",
+        authDomain: "geolocation-beab5.firebaseapp.com",
+        databaseURL: "https://geolocation-beab5.firebaseio.com",
+        storageBucket: "geolocation-beab5.appspot.com",
+        messagingSenderId: "1005054328238"
+    };
+    firebase.initializeApp(config);
+
+    var storage = firebase.storage();
+    var storageRef = storage.ref();
+
+    var mblob = new Blob([locale], { type: 'text/plain' });
+    var textFile= new File([mblob],"Location"+locale[10]+locale[11],{ type: 'text/plain' })
+
+
+    // Create the file metadata
+    var metadata = {
+        contentType: 'text/plain'
+    };
+
+    if (textFile)
+    // Upload file and metadata to the object 'images/mountains.jpg'
+        var uploadTask = storageRef.child(textFile.name).put(textFile, metadata);
+
+    // Listen for state changes, errors, and completion of the upload.
+    uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
+        function(snapshot) {
+            // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+            var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            console.log('Upload is ' + progress + '% done');
+            switch (snapshot.state) {
+                case firebase.storage.TaskState.PAUSED: // or 'paused'
+                    console.log('Upload is paused');
+                    break;
+                case firebase.storage.TaskState.RUNNING: // or 'running'
+                    console.log('Upload is running');
+                    break;
+            }
+        },
+        function(error) {
+            switch (error.code) {
+                case 'storage/unauthorized':
+                    // User doesn't have permission to access the object
+                    break;
+
+                case 'storage/canceled':
+                    // User canceled the upload
+                    break;
+                case 'storage/unknown':
+                    // Unknown error occurred, inspect error.serverResponse
+                    break;
+            }
+        },
+        function() {
+            // Upload completed successfully, now we can get the download URL
+            var downloadURL = uploadTask.snapshot.downloadURL;
+        });
 }
