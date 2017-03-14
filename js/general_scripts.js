@@ -152,6 +152,7 @@ function PushDistances(){
   }
   div = document.getElementById("table");
   div.innerHTML = DistanceLabel;
+}
 
 //----------------------------------------------Firebase Scripts----------------------------------------------------------//
 
